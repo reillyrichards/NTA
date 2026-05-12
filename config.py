@@ -18,3 +18,4 @@ SUSPICIOUS_PORTS = [4444, 1337, 31337, 6666, 9999]
 # 9999  → common backdoor/RAT port
 
 INTERFACE = "lo" #Change to "eth0" after local testing
+LOG_FILE = "logs/alerts.log"
