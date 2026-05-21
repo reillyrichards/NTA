@@ -98,4 +98,25 @@ class Threatdetector:
                 f"{len(self.packet_counts[src_ip])} packets "
                 f"in {HIGH_TRAFFIC_WINDOW}s "
             )
+    def check_suspicious_port(self, src_ip, dst_port):
+        """
+        Flags any connection to a port known to be used by attack tools, does not track history
+        or count occurances. Signature based, not anomaly based.
+        Big O of O(n), since it is a small list, this is fine.
+        """
+
+        if dst_port in SUSPICIOUS_PORTS:
+            logAlert(
+                "SUSPICIOUS PORT",
+                src_ip,
+                f"Connection attempt to port {dst_port} (known suspicious port)"
+            )
     
+    def analyse_packet(self, src_ip, dst_port):
+        """
+        Public entry point called from analyser.py
+        """
+        self.check_port_scan(src_ip, dst_port)
+        self.check_brute_force(src_ip, dst_port)
+        self.check_high_traffic(src_ip)
+        self.check_suspicious_port(src_ip, dst_port)
