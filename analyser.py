@@ -37,3 +37,20 @@ def process_packet(packet):
 
     #Detector only needs IP and port
     detector.analyse_packet(src_ip,dst_port) 
+
+def start_capture():
+    """
+    Starts packet capture loop, runs forever until Ctrl + C is pressed, it is supposed to run continuously
+    """
+    log_info(f"Starting packet capture on interface: {INTERFACE}")
+    log_info(f"Press Ctrl + C to stop.")
+
+    sniff(
+        iface = INTERFACE, #Which NI to listen on
+        prn=process_packet,
+        store = False,
+        filter = "tcp or udp"
+    )
+
+if __name__ == "__main__":
+    start_capture()
